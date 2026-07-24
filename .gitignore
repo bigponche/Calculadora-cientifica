@@ -1,0 +1,4 @@
+__pycache__/     # ignora la carpeta completa, en cualquier lugar del proyecto
+*.pyc            # ignora cualquier archivo que termine en .pyc
+.vscode/         # ignora la carpeta de configuración de VS Code
+.idea/           # ignora la carpeta de configuración de PyCharm
