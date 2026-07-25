@@ -1,3 +1,4 @@
+from requisitos import operadores, parentesis, factorial
 
 def leer_numero(expresion,inicio):
     i=inicio
@@ -27,3 +28,12 @@ def leer_palabra(expresion,inicio):
 leer_palabra("sin(90)", 0)
 leer_palabra("pi+5", 0)
 leer_palabra("cos(0)+sin(0)", 7)
+
+def leer_simbolo(expresion,inicio):
+    i=inicio
+    if expresion[i] in operadores or expresion[i] in parentesis or expresion[i] in factorial:
+        resultado=expresion[i]
+        i += 1
+    else:
+        raise SyntaxError('el operador no es valido')
+    return resultado,i
