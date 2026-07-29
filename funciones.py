@@ -37,3 +37,22 @@ def leer_simbolo(expresion,inicio):
     else:
         raise SyntaxError('el operador no es valido')
     return resultado,i
+
+def tokenizar(expresion):
+    i = 0
+    tokens = []
+    while i < len(expresion):
+        caracter = expresion[i]
+        if caracter.isdigit():
+            valor, i = leer_numero(expresion, i)
+        elif caracter.isalpha():
+            valor, i = leer_palabra(expresion, i)
+        elif caracter in operadores or caracter in parentesis or caracter in factorial:
+            valor, i = leer_simbolo(expresion, i)
+        elif caracter==" ":
+            i += 1
+            continue
+        else:
+            raise SyntaxError('introduciste un valor invalido')
+        tokens.append(valor)
+    return tokens
