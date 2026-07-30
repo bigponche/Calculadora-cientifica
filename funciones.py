@@ -1,4 +1,4 @@
-from requisitos import operadores, parentesis, factorial
+from requisitos import operadores, parentesis, factorial, OPERATOR_INFO
 
 def leer_numero(expresion,inicio):
     i=inicio
@@ -56,3 +56,21 @@ def tokenizar(expresion):
             raise SyntaxError('introduciste un valor invalido')
         tokens.append(valor)
     return tokens
+
+
+def es_mayor_o_igual_precedencia(pila_operadores, nuevo_operador):
+    if pila_operadores == []:
+        return False
+    
+    precedencia_arriba = OPERATOR_INFO[pila_operadores[-1]]['precedencia']
+    precedencia_nuevo = OPERATOR_INFO[nuevo_operador]['precedencia']
+    
+    if precedencia_arriba > precedencia_nuevo:
+        return True
+    elif precedencia_arriba == precedencia_nuevo:
+        if OPERATOR_INFO[nuevo_operador]['asociatividad'] == 'izquierda':
+            return True
+        else:
+            return False
+    else:
+        return False
