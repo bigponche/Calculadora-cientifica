@@ -74,3 +74,44 @@ def es_mayor_o_igual_precedencia(pila_operadores, nuevo_operador):
             return False
     else:
         return False
+    
+def procesar_cierre_parentesis(pila_operadores, salida):
+    while pila_operadores[-1] != '(':
+        operador_sacado = pila_operadores.pop()
+        salida.append(operador_sacado)
+    pila_operadores.pop()
+    
+
+
+def shunting_yard(tokens):
+    pila_operadores = []
+    salida = []
+    
+    for token in tokens:
+        if token.replace('.', '', 1).isdigit():
+            salida.append(token)
+        elif token == '(':
+            pila_operadores.append(token)
+        elif token == ')':
+            procesar_cierre_parentesis(pila_operadores, salida)
+        else:
+            while pila_operadores != [] and pila_operadores[-1] != '(' and es_mayor_o_igual_precedencia(pila_operadores, token):
+                operador_sacado = pila_operadores.pop()
+                salida.append(operador_sacado)
+            pila_operadores.append(token)
+    while pila_operadores != []:
+        agregado = pila_operadores.pop()
+        salida.append(agregado)
+    
+    return salida
+
+
+def evaluar_rpn(tokens_rpn):
+    pila_numeros = []
+    for token in tokens_rpn:
+        if token.replace('.', '', 1).isdigit():
+            # ← número: apilarlo (como float, no como string)
+        else:
+            # ← operador: sacar los dos operandos en el orden correcto,
+            #    aplicar la operación, apilar el resultado
+    return pila_numeros.pop()
