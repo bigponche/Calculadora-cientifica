@@ -1,3 +1,4 @@
+import math
 from requisitos import operadores, parentesis, factorial, OPERATOR_INFO
 
 def leer_numero(expresion,inicio):
@@ -38,12 +39,19 @@ def leer_simbolo(expresion,inicio):
         raise SyntaxError('el operador no es valido')
     return resultado,i
 
+
+    
+
+
 def tokenizar(expresion):
     i = 0
-    tokens = []
+    tokens = []       
     while i < len(expresion):
         caracter = expresion[i]
-        if caracter.isdigit():
+        if caracter == "-" and (tokens == [] or tokens[-1] in operadores or tokens[-1] in parentesis):
+            valor , i = leer_numero(expresion,i+1)
+            valor = "-"+ valor
+        elif caracter.isdigit():
             valor, i = leer_numero(expresion, i)
         elif caracter.isalpha():
             valor, i = leer_palabra(expresion, i)
@@ -110,8 +118,38 @@ def evaluar_rpn(tokens_rpn):
     pila_numeros = []
     for token in tokens_rpn:
         if token.replace('.', '', 1).isdigit():
-            # ← número: apilarlo (como float, no como string)
+            numero = float(token)
+            pila_numeros.append(numero)
+        elif token == '!':
+            operando = pila_numeros.pop()   # el factorial solo saca UN número
+            if operando != int(operando):
+                raise ValueError("el factorial no puede ser un decimal")
+            elif operando < 0:
+                raise ValueError("el factorial no puede ser negativo")
+            else:
+                resultado=math.factorial(int(operando))
+            # ← tu turno: calcular el factorial de "operando" y guardarlo en "resultado"
+            pila_numeros.append(resultado)
         else:
-            # ← operador: sacar los dos operandos en el orden correcto,
-            #    aplicar la operación, apilar el resultado
+            segundo_operando = pila_numeros.pop()
+            primer_operando = pila_numeros.pop()
+            if token == '+':
+                resultado = primer_operando + segundo_operando
+            elif token == '-':
+                resultado = primer_operando - segundo_operando
+            elif token == '*':
+                resultado = primer_operando * segundo_operando
+            elif token == '/':
+                if segundo_operando == 0.0:
+                    raise ZeroDivisionError('No puedes dividir entre cero')
+                else:
+                    resultado = primer_operando / segundo_operando
+            elif token == '^':
+                resultado = primer_operando ** segundo_operando
+            elif token == '%':
+                if segundo_operando == 0.0:
+                    raise ZeroDivisionError('No puedes dividir entre cero')
+                else:
+                    resultado = primer_operando % segundo_operando
+            pila_numeros.append(resultado)
     return pila_numeros.pop()
