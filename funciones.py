@@ -1,5 +1,5 @@
 import math
-from requisitos import operadores, parentesis, factorial, OPERATOR_INFO
+from requisitos import operadores, parentesis, factorial, OPERATOR_INFO, constantes
 
 def leer_numero(expresion,inicio):
     i=inicio
@@ -96,7 +96,7 @@ def shunting_yard(tokens):
     salida = []
     
     for token in tokens:
-        if token.replace('.', '', 1).isdigit():
+        if token.replace('.', '', 1).replace('-','',1).isdigit() or token in constantes:
             salida.append(token)
         elif token == '(':
             pila_operadores.append(token)
@@ -120,7 +120,15 @@ def evaluar_rpn(tokens_rpn):
         if token.replace('.', '', 1).replace('-','',1).isdigit():
             numero = float(token)
             pila_numeros.append(numero)
+        elif token.isalpha() and token in constantes:
+            if token == "pi":
+                pila_numeros.append(math.pi)
+            elif token == 'e':
+                pila_numeros.append(math.e)
+            else:
+                raise SyntaxError('No es un valor constante')
         elif token in ['sin', 'cos', 'tan', 'ln', 'log', 'sqrt']:
+            
             operando = pila_numeros.pop()
             if token == 'sin':
                 resultado = math.sin(operando)
