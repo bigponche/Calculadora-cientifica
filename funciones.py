@@ -117,9 +117,33 @@ def shunting_yard(tokens):
 def evaluar_rpn(tokens_rpn):
     pila_numeros = []
     for token in tokens_rpn:
-        if token.replace('.', '', 1).isdigit():
+        if token.replace('.', '', 1).replace('-','',1).isdigit():
             numero = float(token)
             pila_numeros.append(numero)
+        elif token in ['sin', 'cos', 'tan', 'ln', 'log', 'sqrt']:
+            operando = pila_numeros.pop()
+            if token == 'sin':
+                resultado = math.sin(operando)
+            elif token == 'cos':
+                resultado = math.cos(operando)
+            elif token == 'tan':
+                resultado = math.tan(operando)
+            elif token == 'sqrt':
+                if operando < 0:
+                    raise ValueError('esto es un numero imaginario') # ← tu turno: validar que operando no sea negativo, y calcular la raíz
+                else:
+                    resultado = math.sqrt(operando)
+            elif token == 'ln':
+                if operando <= 0:
+                    raise ValueError('logaritmo debe ser un numero > 0')
+                else:
+                    resultado = math.log(operando)
+            elif token == 'log':
+                if operando <= 0:
+                    raise ValueError('logaritmo debe ser un numero > 0')
+                else:
+                    resultado = math.log10(operando)
+            pila_numeros.append(resultado)
         elif token == '!':
             operando = pila_numeros.pop()   # el factorial solo saca UN número
             if operando != int(operando):
