@@ -14,9 +14,6 @@ def leer_numero(expresion,inicio):
         i += 1
     return resultado, i
 
-print(leer_numero("23+4",0))
-print(leer_numero("3.5*2",0))
-print(leer_numero("sin(90",4))
 
 def leer_palabra(expresion,inicio):
     i= inicio
@@ -26,9 +23,6 @@ def leer_palabra(expresion,inicio):
         i +=1
     return resultado, i
 
-leer_palabra("sin(90)", 0)
-leer_palabra("pi+5", 0)
-leer_palabra("cos(0)+sin(0)", 7)
 
 def leer_simbolo(expresion,inicio):
     i=inicio
